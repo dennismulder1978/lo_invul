@@ -1,26 +1,66 @@
+from math import exp
 import tkinter as tk
 import pyautogui
 from time import time, sleep
 import data
 
-class MainWindow:
+class MyApp(tk.Tk):
     
-    def __init__(self, window):
-        self.window = window
-        self.menubar = tk.Menu(self.window)
-                
-    def menu_bar(self):
-        self.filemenu = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Exit", command=self.window.quit)
-        self.menubar.add_cascade(label="File", menu=self.filemenu)
-        self.window.config(menu=self.menubar)
-    
-    def window_frame(self):
-        self.frame = tk.Frame(self.window, background='red')
-        self.frame.pack()
-
+    def __init__(self):
+        super().__init__()
         
-         
+        # variables
+        self.pad = 5
+        
+        # initialisation
+        self.title('Automatisch invullen van lichamelijk onderzoek in HIS')
+        self.minsize(800,400)
+                
+        # adding items
+        self.create_menu()
+        self.create_main_frame()        
+        
+        
+    def create_menu(self):
+        menubar = tk.Menu(self)
+        
+        # Create File menu
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Exit", command=self.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+        
+        # Attach the menubar to the root window
+        self.config(menu=menubar)
+        
+    def create_main_frame(self):
+        frame = tk.Frame(self, bg='blue')
+        frame.pack(fill='both', expand=True, padx=self.pad, pady=self.pad)
+        
+        for keyword in data.physical.keys():
+            # New paragraph
+            sub_frame = tk.Frame(frame, bg="lightblue")
+            sub_frame.pack(fill='both', expand=True, padx=self.pad, pady=self.pad)
+            
+            # Title of paragraph in its own frame
+            label_frame = tk.Frame(sub_frame, height=1)
+            label_frame.pack()
+            name = tk.Label(sub_frame, textvariable=tk.StringVar(sub_frame,keyword), anchor='nw')
+            name.pack(fill='x')
+            
+            # input of the paragraph
+            input_frame = tk.Frame(sub_frame)
+            input_frame.pack(side='top', fill='both', expand=True)
+            for each_item in data.physical[keyword]:
+                item_label = tk.Label(input_frame, textvariable=tk.StringVar(input_frame, each_item), anchor='nw')
+                item_label.pack(fill='both')
+        
+        # add a submit button
+        button_frame = tk.Frame(frame, bg='lightblue')
+        button_frame.pack(fill='both')
+        button = tk.Button(button_frame, text='Kopieer naar HIS', width=20, height=3, command=self.quit)
+        button.pack(padx=self.pad, pady=self.pad, anchor='se')
+    
+            
     def button_click(self):
         with pyautogui.hold("alt"):
             pyautogui.press("tab")
@@ -78,15 +118,9 @@ class MainWindow:
         with pyautogui.hold("alt"):
             pyautogui.press("s")
 
-    def test(self):
-        print('okay')
 
-def main(): 
-    root = tk.Tk()
-    root.title('Automatisch invullen van lichamelijk onderzoek in HIS')
-    root.geometry('500x300')
-    MainWindow(root)
-    root.mainloop()
+
 
 if __name__ == '__main__':
-    main()
+    app = MyApp()
+    app.mainloop()
