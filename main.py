@@ -12,7 +12,7 @@ class MyApp(tk.Tk):
         # variables
         self.pad = 5
         
-        # initialisation
+        # initialization
         self.title('Automatisch invullen van lichamelijk onderzoek in HIS')
         self.minsize(800,400)
                 
