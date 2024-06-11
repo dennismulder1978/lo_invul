@@ -1,6 +1,7 @@
 from math import exp
 import tkinter as tk
-import pyautogui
+import pyautogui as pg
+import pygetwindow as gw
 from time import time, sleep
 import data
 
@@ -29,7 +30,7 @@ class MyApp(tk.Tk):
         filemenu.add_command(label="Exit", command=self.quit)
         menubar.add_cascade(label="File", menu=filemenu)
         
-        # Attach the menubar to the root window
+        # Attach the menubar to the root window_HIS
         self.config(menu=menubar)
         
     def create_main_frame(self):
@@ -112,25 +113,25 @@ class MyApp(tk.Tk):
         button.grid(row=100, column=0, columnspan=2, padx=5, pady=5, sticky='w')
         
     def button_click(self):
-        print(self.selected_option.get())
         text = ""
         if self.selected_option.get() == 1:
             text = self.zuigeling_entry.get("1.0", tk.END)
         elif self.selected_option.get() == 2:
             text = self.locomotorius_entry.get("1.0", tk.END)
-        print(text)
-        # with pyautogui.hold("alt"):
-        #     pyautogui.press("tab")
-        # # pyautogui.getWindowsWithTitle("Medicom*")[0]
+        window_HIS = gw.getWindowsWithTitle('Medico')[0]
+        window_HIS.activate()
+        # pg.hotkey('alt', 'n')
         # sleep(2)
-        # pyautogui.hotkey("shift", "f12")
-        # sleep(2)
-        # pyautogui.typewrite("Voorbeeldtekst regel S", interval=0.01)
-        # for i in range (3):
-        #     pyautogui.press("tab")
-        # pyautogui.typewrite("C")
-        # pyautogui.press("tab")
-        # pyautogui.typewrite("Voorbeeldtekst regel O", interval=0.01)
+        # pg.press("C")
+        # sleep(1)
+        # pg.press('tab')
+        # sleep(1)
+        # pg.hotkey('alt', 'tab')
+        # sleep(1)
+        # pg.press('O')
+        # sleep(1)
+        # pg.press('tab')
+        pg.typewrite(text, interval=0.01)
         # for i in range (4):
         #     pyautogui.press("tab")
         # pyautogui.typewrite("L01")
